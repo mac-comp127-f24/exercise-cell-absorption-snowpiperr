@@ -26,6 +26,7 @@ public class CellSimulation {
         double size = rand.nextInt(5) + 2;
         cells = new ArrayList<Cell>();
         populateCells();
+        
 
 
        
@@ -35,10 +36,12 @@ public class CellSimulation {
             for(Cell cell: cells) {
                 Point canvasCenter = new Point(canvas.getWidth() / 2.0, canvas.getHeight() / 2.0);
                 cell.moveAround(canvasCenter);
-                cell.grow(0.02);
-                canvas.pause(10);
+                handleCellInteraction();
+                
             }
+            
             canvas.draw();
+            canvas.pause(10);
         }
     }
 
@@ -55,6 +58,17 @@ public class CellSimulation {
             cell.addToCanvas(canvas); 
             cells.add(cell);      
         }
+    }
+
+    private void handleCellInteraction() {
+            for(int i = 0; i < 200; i++){
+                Cell currCell = cells.get(i);
+                for(int j = i + 1; j < cells.size(); j++){
+                    Cell currCell2 = cells.get(j);
+                    currCell.interactWith(currCell2);
+                }
+            }
+        
         
     }
 

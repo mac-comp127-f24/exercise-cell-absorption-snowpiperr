@@ -70,4 +70,38 @@ public class Cell {
     public void addToCanvas(CanvasWindow canvas){
         canvas.add(cellShape);
     }
+    public Point getCenter() {
+        return cellShape.getCenter();
+    }
+    public void interactWith(Cell otherCell) {
+        if (radius == 0 || otherCell.radius == 0) {
+            return;
+        }
+        if (overlapAmount(otherCell) < 0) {
+            return;
+        }
+
+        if (radius > otherCell.radius) {
+            absorb(otherCell);
+        } else {
+            otherCell.absorb(this);
+        }
+    }
+
+    private double overlapAmount(Cell otherCell) {
+        return radius + otherCell.radius - getCenter().distance(otherCell.getCenter());
+    }
+
+    private void absorb(Cell otherCell) {
+        double d = getCenter().distance(otherCell.getCenter());
+        double a = sqr(radius) + sqr(otherCell.radius);
+        double newRadius = (d + Math.sqrt(2 * a - sqr(d))) / 2;
+
+        setRadius(newRadius);
+        otherCell.setRadius(d - newRadius);
+    }
+
+   
+
+    
 }
